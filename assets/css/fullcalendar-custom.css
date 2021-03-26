@@ -1,0 +1,79 @@
+.body {
+    font-family: 'Roboto';
+    font-size: 1.5em;
+}
+
+.fc {
+    /* layout of immediate children */
+    display: flex;
+    flex-direction: column;
+    font-size: 1em;
+    font-family: 'Roboto';
+    font-weight: bold;
+}
+
+.fc .fc-timegrid-col.fc-day-today,
+.fc .fc-day-today {
+    background-color: rgba(207, 225, 233, 0.322);
+}
+
+.fc-direction-ltr .fc-timegrid-col-events {
+    margin: 0px;
+    padding: 0;
+}
+
+.fc-timegrid-event {
+    /* events need to be root */
+    border-radius: 0px;
+}
+
+.fc-timegrid-event-harness {
+    padding: 0;
+}
+
+.fc-media-screen .fc-timegrid-event {
+    position: absolute;
+    top: 0;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+}
+
+.fc tbody,
+td,
+tfoot,
+th,
+thead,
+tr {
+    border-color: inherit;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.fc-timegrid-slot-label-cushion {
+    font-weight: bold;
+}
+
+.fc-timegrid-event-condensed .fc-event-title {
+    font-size: 1em;
+}
+
+#modalEstadoTurno .modal-footer .row {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    align-content: space-between;
+}
+
+.estado-turno-negrita {
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.fc-event {
+    cursor: pointer;
+}
+
+.img-colores {
+    max-height: 250px;
+}

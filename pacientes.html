@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang='es'>
+
+<head>
+    <meta charset='utf-8' />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href='https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css' rel='stylesheet'>
+    <link href='https://bootswatch.com/4/pulse/bootstrap.min.css' rel='stylesheet' />
+    <link href='./assets/css/pacientes-esp.css' rel='stylesheet' />
+    <link rel="stylesheet" href="./assets/css/sidebar/style.css">
+    <title>Agenda de turnos</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <img src="./assets/img/logocalendario.png" alt="logo-calendario" id="img-logo-sidebar">
+            </div>
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="./agenda.html"><i class="fas fa-calendar-alt"></i> Agenda</a>
+                </li>
+                <li>
+                    <a href="#homeSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-user"></i> Pacientes</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                        <li class="active">
+                            <a href="#"><i class="fas fa-user-cog"></i> Ver</a>
+                        </li>
+                        <li>
+                            <a href="#" class="agregarNuevoPaciente"><i class="fas fa-user-plus"></i> Agregar</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#pageSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-user-md"></i> Especialistas</a>
+                    <ul class="collapse list-unstyled" id="pageSubmenu">
+                        <li>
+                            <a href="./especialistas.html"><i class="fas fa-user-cog"></i> Ver</a>
+                        </li>
+                        <li>
+                            <a href="#" class="agregarNuevoEspecialista"><i class="fas fa-user-plus"></i> Agregar</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="link-desactivado"><i class="fas fa-chart-bar"></i> Ingresos</a>
+                </li>
+                <li>
+                    <a class="link-desactivado"><i class="fas fa-comment-alt"></i> Recordatorios</a>
+                </li>
+                <li>
+                    <a href="#" id="btn-sign-out"><i class="fas fa-sign-out-alt"></i> Salir</a>
+                </li>
+                <li>
+                    <a href="#" id="ayuda-colores"><i class="fas fa-question"></i> Ayuda</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Page Content -->
+        <div id="content">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <div class="container-fluid">
+                    <button type="button" id="sidebarCollapse" class="btn bg-secondary">
+                        <i class="fas fa-align-justify"></i>
+                        <span>Menú</span>
+                    </button>
+                </div>
+            </nav>
+
+            <!-- Alerta -->
+            <div class="alert alert-dismissible alert-secondary" id="alerta" role="alert">
+                <strong id="titulo-alerta">. </strong>
+                <p id="mensaje-alerta"></p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="alert-close"></button>
+            </div>
+
+            <div class="container-fluid">
+                <div class="d-flex justify-content-center box-spinner">
+                    <div class="spinner-border text-primary" role="status" style="visibility: hidden" id="spinner-pacientes">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <div class="row justify-content-between">
+                    <div class="col-8">
+                        <input class="form-control" id="buscador-pagina-pacientes" type="text" placeholder="Buscar paciente...">
+                    </div>
+                    <div class="col-2">
+                        <button class="btn btn-block btn-primary btn-pacientes agregarNuevoPaciente" type="button">Nuevo Paciente</button>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <!-- Tabla pacientes -->
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">DNI</th>
+                        <th scope="col">Obra Social</th>
+                        <th scope="col">Celular</th>
+                        <th scope="col">Mail</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody id="body-tabla-pacientes">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal nuevo paciente-->
+    <div class="modal" tabindex="-1" id="modalNuevoPaciente" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title text-center" id="titulo-nuevo-paciente">Crear nuevo Paciente</h5>
+                    <button type="button" class="btn-close bg-primary" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row justify-content-center" id="form-nuevo">
+                        <form class="row needs-validation" novalidate id="form-nuevo-paciente">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="name" placeholder="Nombre" required>
+                                <div class="invalid-feedback">
+                                    Por favor complete este campo.
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lastname" class="form-label">Apellido</label>
+                                <input type="text" class="form-control" id="lastname" placeholder="Apellido" required>
+                                <div class="invalid-feedback">
+                                    Por favor complete este campo.
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="dni" class="form-label">DNI</label>
+                                <div class="input-group has-validation">
+                                    <input type="text" class="form-control" id="dni" aria-describedby="inputGroupPrepend" required pattern="[0-9]{8}" placeholder="00000000">
+                                    <div class="invalid-feedback">
+                                        Por favor ingresá un DNI válido, sólo 8 números.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="obraSocial" class="form-label">Obra Social</label>
+                                <select class="form-select" id="obraSocial" required>
+                                <option selected disabled value="">Seleccione...</option>
+                                <option value="IOMA">IOMA</option>
+                                <option value="PAMI">PAMI</option>
+                                <option value="OSDE">OSDE</option>
+                                <option value="GALENO">GALENO</option>
+                                <option value="PARTICULAR">PARTICULAR</option>
+                                <option value="OTRA">OTRA</option>
+                              </select>
+                                <div class="invalid-feedback">
+                                    Por favor seleccione una.
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Celular</label>
+                                <input type="text" class="form-control" id="phone" required placeholder="11XXXXXXXX" pattern="11[0-9]{8}">
+                                <div class="invalid-feedback">
+                                    Por favor indique un celular válido (Debe comenzar con 11)
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingrese un email válido.
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <br>
+                                <button class="btn btn-block btn-outline-primary btn-form fw-bold" type="submit">GUARDAR</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal nuevo especialista-->
+    <div class="modal" tabindex="-1" id="modalNuevoEspecialista" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="titulo-nuevo-especialista">Crear nuevo especialista</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row justify-content-center" id="form-nuevo">
+                        <form class="row needs-validation" novalidate id="form-nuevo-especialista">
+                            <div class="col-md-6">
+                                <label for="nombre-esp" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="nombre-esp" placeholder="Nombre" required>
+                                <div class="invalid-feedback">
+                                    Por favor complete este campo.
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="apellido-esp" class="form-label">Apellido</label>
+                                <input type="text" class="form-control" id="apellido-esp" placeholder="Apellido" required>
+                                <div class="invalid-feedback">
+                                    Por favor complete este campo.
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="dni-esp" class="form-label">DNI</label>
+                                <div class="input-group has-validation">
+                                    <input type="text" class="form-control" id="dni-esp" aria-describedby="inputGroupPrepend" required pattern="[0-9]{8}" placeholder="00000000">
+                                    <div class="invalid-feedback">
+                                        Por favor ingrese un DNI válido, sólo 8 números.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="matricula-esp" class="form-label">Matrícula</label>
+                                <div class="input-group has-validation">
+                                    <input type="text" class="form-control" id="matricula-esp" aria-describedby="inputGroupPrepend" required pattern="[0-9]{5,8}" placeholder="00000000">
+                                    <div class="invalid-feedback">
+                                        Por favor ingrese una matrícula válida, sólo números.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="prefijo-esp" class="form-label">Prefijo</label>
+                                <select class="form-select" id="prefijo-esp" required>
+                        <option selected disabled value="">Seleccione...</option>
+                        <option value="DR.">DR.</option>
+                        <option value="DRA.">DRA.</option>
+                        <option value="LIC.">LIC.</option>
+                      </select>
+                                <div class="invalid-feedback">
+                                    Por favor seleccione una.
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="especialidad-esp" class="form-label">Especialidad</label>
+                                <input type="text" class="form-control" id="especialidad-esp" required placeholder="Especialidad">
+                                <div class="invalid-feedback">
+                                    Por favor indique una especialidad válida.
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email-esp" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email-esp" placeholder="email@ejemplo.com" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingrese un email válido.
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="celular-esp" class="form-label">Celular</label>
+                                <input type="text" class="form-control" id="celular-esp" required placeholder="11XXXXXXXX" pattern="11[0-9]{8}">
+                                <div class="invalid-feedback">
+                                    Por favor indique un celular válido (Debe comenzar con 11)
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <br>
+                                <button class="btn btn-block btn-outline-primary btn-form fw-bold" type="submit">GUARDAR</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal info paciente-->
+    <div class="modal" tabindex="-1" id="modal-info-paciente" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="dato-fecha-turno">Info del Paciente</h5>
+                    <button type="button" class="btn-close" id="cierre-modal-info" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row align-items-center">
+                        <div class="col-lg-12">
+                            <table class="table" id="tabla-turnos-paciente">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Fecha</th>
+                                        <th scope="col">Hora</th>
+                                        <th scope="col">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="body-turnos-paciente">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Salir-->
+    <div class="modal" tabindex="-1" id="modalSalir" aria-hidden="true">
+        <div class="modal-dialog .modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h2 class="text-center"> Saliendo de tu cuenta</h2>
+                    <br>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Confirmacion-->
+    <div class="modal" tabindex="-1" id="modalConfirmacion" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row justify-content-center">
+                        <img src="./assets/img/eliminar.png" alt="" id="img-eliminar">
+                    </div>
+                    <div class="col-12">
+                        <br>
+                        <h4 class="text-center" id="pregunta-salida"> </h4>
+                        <br>
+                        <div class="row">
+                            <br>
+                            <div class="col-6">
+                                <button class="btn btn-block btn-outline-primary" id="confirmacion-ok" data-bs-dismiss="modal">Si</button>
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-block btn-outline-secondary" id="confirmacion-false" data-bs-dismiss="modal">No</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JQuery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+
+    <!-- Full Calendar-->
+    <script src='./assets/fullcalendar/lib/main.js'></script>
+
+    <!-- Entidades-->
+    <script src='./assets/js/alerta.js'></script>
+
+    <!-- Firebase-->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
+    <script src="./assets/js/firebase.js"></script>
+
+    <!-- Script htmls-->
+    <script src='./assets/js/utils.js'></script>
+    <script src='./assets/js/api-conection.js'></script>
+    <script src='./assets/js/especialistas-page.js'></script>
+    <script src='./assets/js/pacientes-page.js'></script>
+    <script src='./assets/js/tablas-html.js'></script>
+    <script src='./assets/js/validacion-form.js'></script>
+</body>
+
+</html>

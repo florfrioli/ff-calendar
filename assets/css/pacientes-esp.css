@@ -1,0 +1,31 @@
+.btn-eliminar-especialista,
+.btn-eliminar-paciente {
+    color: #AD1F32;
+}
+
+.btn-eliminar-especialista:hover,
+.btn-eliminar-paciente:hover {
+    color: #BC4D5C;
+}
+
+#modalNuevoPaciente .modal-body .col-md-6,
+#modalNuevoEspecialista .modal-body .col-md-6,
+#modalEstadoTurno .modal-body .col-md-6,
+#modalSeleccionPaciente .modal-body .col-12 {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.estado-turno-negrita {
+    font-weight: bold;
+}
+
+#img-eliminar {
+    height: 80px;
+    display: inline-block;
+    width: auto;
+}
+
+.box-spinner {
+    margin-bottom: 10px;
+}
