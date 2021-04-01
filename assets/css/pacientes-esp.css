@@ -26,6 +26,20 @@
     width: auto;
 }
 
+#img-alerta {
+    height: 120px;
+    display: inline-block;
+    width: auto;
+}
+
 .box-spinner {
     margin-bottom: 10px;
 }
+
+.gif-ayuda {
+    height: 100%;
+    width: 100%;
+}
+
+
+/* modal - no login*/

@@ -25,25 +25,22 @@ function pantallaInicio() {
             .then((respuesta) => {
                 auth.createUserWithEmailAndPassword(email, password)
                     .then(userCredential => {
-                        auth.currentUser.getIdToken()
-                            .then((token) => {
-                                if (token) {
-                                    signUp({ email, password, token }) //postAPI(`http://localhost:8080/api/user/signup`, JSON.stringify({ email, password, token }))
-                                        .then((resp) => console.log(JSON.parse(resp).ok))
-                                        .catch((err) => console.log(err));
-                                    console.log("Registrado correctamente");
-                                    $("#modalRegistro").modal('show');
-                                    setTimeout(function() {
-                                        $("#modalRegistro").modal('hide');
-                                        window.location.href = "./index.html";
-                                    }, 3500);
-                                }
-                            })
+                        let user = auth.currentUser;
+                        signUp({ email, password, uid: user.uid }) //postAPI(`http://localhost:8080/api/user/signup`, JSON.stringify({ email, password, token }))
+                            .then((resp) => console.log(JSON.parse(resp).ok))
                             .catch((err) => console.log(err));
-                    })
-                    .catch(error => mostrarErrorSignUp(error));
+                        console.log("Registrado correctamente");
+                        $("#modalRegistro").modal('show');
+                        setTimeout(function() {
+                            $("#modalRegistro").modal('hide');
+                            window.location.href = "./index.html";
+                        }, 3500);
+                    }).catch(error => mostrarErrorSignUp(error));
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                document.getElementById("mensaje-error-nuevo").innerText = err;
+                console.log(err)
+            });
     });
 
     // Click en iniciar sesion
@@ -58,13 +55,16 @@ function pantallaInicio() {
                 console.log("Inicio correctamente");
                 postAPI(`http://localhost:8080/api/user/signin`, JSON.stringify({ email }))
                     .then((resp) => {
-                        almacenarTokenYPermisos(resp);
                         $("#modalBienvenido").modal('show');
-                        $("input").value = "";
-                        setTimeout(function() {
-                            $("#modalBienvenido").modal('hide');
-                            window.location.href = "./agenda.html";
-                        }, 3000);
+                        $("input").value = ""; // TO - DO: almacenar el token en el local storage
+                        auth.currentUser.getIdToken()
+                            .then(token => {
+                                almacenarTokenYPermisos(token, resp);
+                                setTimeout(function() {
+                                    $("#modalBienvenido").modal('hide');
+                                    window.location.href = "./agenda.html";
+                                }, 3000);
+                            }).catch((err) => console.log(err));
                     })
                     .catch((err) => console.log(err));
             }).catch(error => mostrarErrorSignIn(error));
@@ -123,8 +123,7 @@ function mostrarErrorSignIn(error) {
 };
 
 // Persiste la sesion en localstorage
-function almacenarTokenYPermisos(info) {
-    let token = JSON.parse(info).token;
+function almacenarTokenYPermisos(token, info) {
     let permisos = JSON.parse(info).admin;
     window.localStorage.setItem("login", "true");
     window.localStorage.setItem("token", token);

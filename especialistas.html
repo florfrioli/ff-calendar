@@ -8,8 +8,9 @@
     <link href='https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css' rel='stylesheet'>
     <link href='https://bootswatch.com/4/pulse/bootstrap.min.css' rel='stylesheet' />
     <link href='./assets/css/pacientes-esp.css' rel='stylesheet' />
+    <link rel="shortcut icon" href="ic_calendario.png" type="/x-icon">
     <link rel="stylesheet" href="./assets/css/sidebar/style.css">
-    <title>Agenda de turnos</title>
+    <title>Agenda de turnos | Especialistas</title>
 </head>
 
 <body>
@@ -55,7 +56,7 @@
                     <a href="#" id="btn-sign-out"><i class="fas fa-sign-out-alt"></i> Salir</a>
                 </li>
                 <li>
-                    <a href="#" id="ayuda-colores"><i class="fas fa-question"></i> Ayuda</a>
+                    <a href="#" id="ayuda-especialistas"><i class="fas fa-question"></i> Ayuda</a>
                 </li>
             </ul>
         </nav>
@@ -322,6 +323,73 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal alerta-->
+    <div class="modal" tabindex="-1" id="modalAlerta" aria-hidden="true">
+        <div class="modal-dialog .modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row justify-content-center">
+                        <img src="./assets/img/alerta.png" alt="" id="img-alerta">
+                    </div><br>
+                    <h3 class="text-center"> Debes iniciar sesión para ingresar.</h3>
+
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <br>
+                    <p class="text-center"> En breve serás dirigido a la página principal...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Inicio sesión-->
+    <div class="modal" tabindex="-1" id="modalSesion" aria-hidden="true">
+        <div class="modal-dialog .modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-center"> Su sesión expiró. Debe iniciar sesión.</h4>
+                    <br>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <br>
+                    <p class="text-center"> En breve serás dirigido a la página principal...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ayuda-->
+    <div class="modal" tabindex="-1" id="modalAyudaEspecialistas" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-center">Especialistas</h4>
+                    <div class="d-flex justify-content-center">
+                        <img src="./assets/img/especialista.gif" class="img-fluid gif-ayuda" alt="instrucciones-especialistas">
+                    </div>
+                </div>
+                <div class="modal-footer ">
+                    <button class="btn btn-md btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>

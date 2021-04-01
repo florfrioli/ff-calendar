@@ -6,10 +6,9 @@ window.onload = mostrarEspecialistas;
 
 // Función que carga el contenido de la página y agrega los eventos a los botones
 function mostrarEspecialistas() {
+    // Oculto las alertas
+    $("#alerta").hide();
     if (window.localStorage.getItem('login') == "true") {
-        // Oculto las alertas
-        $("#alerta").hide();
-
         // Menu lateral
         $('#sidebarCollapse').on('click', function() {
             $('#sidebar').toggleClass('active');
@@ -24,9 +23,20 @@ function mostrarEspecialistas() {
         //Boton salir
         $("#btn-sign-out").on('click', cerrarSesion);
 
+        //Boton ayuda con referencia colores
+        $("#ayuda-especialistas").on('click', function() {
+            $("#modalAyudaEspecialistas").modal('show');
+        });
+
         mostrarTabla();
         habilitarBuscadorEspecialistas();
-    } else { window.location.href = "./index.html"; }
+    } else {
+        $('#sidebar').toggleClass('active');
+        $("#modalAlerta").modal('show');
+        setTimeout(function() {
+            window.location.href = "./index.html";
+        }, 3200);
+    }
 };
 
 //Funcion que recibe una lista de especialistas y la renderiza en el html

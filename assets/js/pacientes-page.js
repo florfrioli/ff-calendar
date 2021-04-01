@@ -5,9 +5,9 @@ window.onload = mostrarPacientes;
 
 // Funcion que carga la pagina dee pacientes y agrega eventos a los clicks
 function mostrarPacientes() {
+    // Oculto las alertas
+    $("#alerta").hide();
     if (window.localStorage.getItem('login') == "true") {
-        // Oculto las alertas
-        $("#alerta").hide();
 
         // Al cerrar la alerta recarga la pag
         $("#cierre-modal-info").on("click", function() {
@@ -28,10 +28,22 @@ function mostrarPacientes() {
         // Click salir
         $("#btn-sign-out").on('click', cerrarSesion);
 
+        //Boton ayuda con referencia colores
+        $("#ayuda-pacientes").on('click', function() {
+            $("#modalAyudaPacientes").modal('show');
+        });
+
         // Carga la tabla
-        mostrarTabla(); // Buscador pacientes:
+        mostrarTabla();
+        // Buscador pacientes:
         habilitarBuscadorPacientes();
-    } else window.location.href = "./index.html";
+    } else {
+        $('#sidebar').toggleClass('active');
+        $("#modalAlerta").modal('show');
+        setTimeout(function() {
+            window.location.href = "./index.html";
+        }, 3200);
+    }
 };
 
 // Función que recolecta los datos del form y devuelve un json paciente- agregar un paciente

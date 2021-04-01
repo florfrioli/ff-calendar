@@ -166,4 +166,16 @@ function llenarSelectConOpciones(lista, tipo) {
     return true;
 };
 
+function tokenVencido() {
+    $('#modalSesion').modal('show');
+    setTimeout(function() {
+        cerrarSesionFirebase();
+        /* window.location.href = "./index.html";
+        window.localStorage.removeItem('token');
+        window.localStorage.removeItem('admin');
+        window.localStorage */
+        $("#modalSesion").modal('hide');
+    }, 3000);
+}
+
 var ADMIN = window.localStorage.getItem('admin');

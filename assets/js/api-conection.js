@@ -3,7 +3,7 @@ const URL_ESPECIALISTA = `http://localhost:8080/api/especialista`;
 const URL_TURNO = `http://localhost:8080/api/turno`;
 const URL_TURNOS_PACIENTE = `http://localhost:8080/api/turno/paciente`;
 const URL_TURNOS_ESPECIALISTA = `http://localhost:8080/api/turno/especialista`;
-const URL_USER_LOGEADO = `http://localhost:8080/api/user/session`;
+const URL_USER_LOGEADO = `http://localhost:8080/api/user`;
 const URL_CHECK_USER = `http://localhost:8080/api/check-user`;
 const URL_SIGNUP = `http://localhost:8080/api/user/signup`;
 const TOKEN = window.localStorage.getItem('token');
@@ -68,6 +68,9 @@ const getAPI = (url, id = "") => {
                 if (this.status >= 200 && this.status < 400) {
                     resolve(this.response);
                 } else {
+                    if (JSON.parse(this.response).error == 'Token vencido') {
+                        console.log('Token vencido');
+                    }
                     reject(this.response);
                 }
             }
@@ -90,6 +93,10 @@ const getAllColection = (url) => {
                 if (this.status >= 200 && this.status < 400) {
                     resolve(JSON.parse(this.response));
                 } else {
+                    if (JSON.parse(this.response).error == 'Token vencido') {
+                        tokenVencido();
+                        console.log('Token vencido');
+                    }
                     reject(this.response);
                 }
             }
@@ -241,7 +248,7 @@ function get(tipo, idoDni) {
 //GET USUARIO LOGEADO POR TOKEN
 function getUserLogeado() {
     return new Promise((resolve, reject) => {
-        getAPI(URL_USER_LOGEADO, `/${TOKEN}`)
+        getAPI(URL_USER_LOGEADO)
             .then((response) => {
                 var especialista = JSON.parse(response).especialista;
                 resolve(especialista);
